@@ -11,14 +11,37 @@ namespace PixelHilbert
     {
         static void Main(string[] args)
         {
+            Random rand = new Random();
             int x = 0; int y = 0; int i = 0;
+            byte red = 255; byte green = 0; byte blue = 0;
             Pixel[,] image = new Pixel[32, 32];
             byte[] header = new byte[54];
             while (i < 1024)
             {
                 x = i / 32;
                 y = i % 32;
-                image[x, y] = new Pixel { r = (byte)i, g = (byte)i, b = (byte)i };
+                image[x, y] = new Pixel { r = red, g = green, b = blue };
+                switch (i / 255 % 6)
+                {
+                    case 0:
+                        green++;
+                        break;
+                    case 1:
+                        red--;
+                        break;
+                    case 2:
+                        blue++;
+                        break;
+                    case 3:
+                        green--;
+                        break;
+                    case 4:
+                        red++;
+                        break;
+                    case 5:
+                        blue--;
+                        break;
+                }
                 i++;
             }
             using (FileStream fStream = File.Open(@"C:\Users\Daniel Coe\Pictures\1024.bmp", FileMode.Open))
