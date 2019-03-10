@@ -12,15 +12,20 @@ namespace PixelHilbert
         static void Main(string[] args)
         {
             Random rand = new Random();
-            int x = 0; int y = 0; int i = 0;
+            Point coord = new Point { x = 0, y = 0 };
+            List<int> direx = null;
+            int i = 0;
             byte red = 255; byte green = 0; byte blue = 0;
             Pixel[,] image = new Pixel[32, 32];
             byte[] header = new byte[54];
+            Func<Point, int, Point> move = (p, n) => n % 2 == 0 ? new Point { x = p.x + n == 0 ? 1 : -1, y = p.y } : new Point { x = p.x, y = p.y + n == 1 ? 1 : -1 };
             while (i < 1024)
             {
-                x = i / 32;
-                y = i % 32;
-                image[x, y] = new Pixel { r = red, g = green, b = blue };
+                image[coord.x, coord.y] = new Pixel { r = red, g = green, b = blue };
+                if (i==direx.Capacity)
+                {
+
+                }
                 switch (i / 255 % 6)
                 {
                     case 0:
@@ -86,5 +91,10 @@ namespace PixelHilbert
         public byte r;
         public byte g;
         public byte b;
+    }
+    struct Point
+    {
+        public int x;
+        public int y;
     }
 }
