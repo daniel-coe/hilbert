@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 
 namespace PixelHilbert
 {
@@ -32,17 +27,17 @@ namespace PixelHilbert
                     }
                     else
                     {
-                        Pixel p = pixels[(i - 54) / 96, (i / 3 - 18) % 32];
+                        int m = (i - 54) / 3 / pixels.GetLength(1); int n = (i / 3 - 18 + pixels.GetLength(1)) % pixels.GetLength(1);
                         switch (i % 3)
                         {
                             case 0:
-                                file[i] = p.b;
+                                file[i] = pixels[m,n].b;
                                 break;
                             case 1:
-                                file[i] = p.g;
+                                file[i] = pixels[m,n].g;
                                 break;
                             case 2:
-                                file[i] = p.r;
+                                file[i] = pixels[m,n].r;
                                 break;
                         }
                     }
@@ -50,6 +45,34 @@ namespace PixelHilbert
                 fStream.Write(file, 0, file.Length);
             }
 
+        }
+        public static byte[] ReadImage(this Pixel[,] pixels, string path)
+        {
+            var header = new byte[54];
+            using (FileStream fStream = File.Open(@"C:\Users\Daniel Coe\Pictures\" + path, FileMode.Open))
+            {
+                for (int i = 0; i < header.Length; i++)
+                {
+                    header[i] = (byte)fStream.ReadByte();
+                }
+                for (int i = 0; i < 3 * pixels.Length; i++)
+                {
+                    int m = i / 3 / pixels.GetLength(1); int n = (i / 3 + pixels.GetLength(1)) % pixels.GetLength(1);
+                    switch (i % 3)
+                    {
+                        case 0:
+                            pixels[m, n].b = (byte)fStream.ReadByte();
+                            break;
+                        case 1:
+                            pixels[m, n].g = (byte)fStream.ReadByte();
+                            break;
+                        case 2:
+                            pixels[m, n].r = (byte)fStream.ReadByte();
+                            break;
+                    }
+                }
+            }
+            return header;
         }
     }
 }
