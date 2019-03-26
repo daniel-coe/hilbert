@@ -27,7 +27,7 @@ namespace PixelHilbert
                     }
                     else
                     {
-                        int m = (i - 54) / 3 / pixels.GetLength(1); int n = (i / 3 - 18 + pixels.GetLength(1)) % pixels.GetLength(1);
+                        int w = pixels.GetLength(1); int m = (i - 54) / 3 / w; int n = (i / 3 - 18 + w) % w;
                         switch (i % 3)
                         {
                             case 0:
@@ -44,7 +44,6 @@ namespace PixelHilbert
                 }
                 fStream.Write(file, 0, file.Length);
             }
-
         }
         public static byte[] ReadImage(this Pixel[,] pixels, string path)
         {
@@ -57,7 +56,7 @@ namespace PixelHilbert
                 }
                 for (int i = 0; i < 3 * pixels.Length; i++)
                 {
-                    int m = i / 3 / pixels.GetLength(1); int n = (i / 3 + pixels.GetLength(1)) % pixels.GetLength(1);
+                    int w = pixels.GetLength(1); int m = i / 3 / w; int n = (i / 3 + w) % w;
                     switch (i % 3)
                     {
                         case 0:
